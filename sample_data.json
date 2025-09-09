@@ -1,0 +1,13 @@
+{
+  "user": {
+    "id": 123,
+    "name": "John Smith",
+    "email": "john.smith@company.com",
+    "age": 28,
+    "roles": ["admin", "user"]
+  },
+  "metadata": {
+    "created_at": "2024-01-15T10:30:00Z",
+    "version": "1.2.0"
+  }
+}
