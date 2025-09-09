@@ -1,0 +1,487 @@
+[
+    {
+        "id": "student-name-required",
+        "name": "Student Name Required",
+        "enabled": true,
+        "priority": 100,
+        "conditions": {
+            "field": "student.name",
+            "operator": "isEmpty"
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.name",
+                "value": true,
+                "options": {
+                    "message": "Student name is required"
+                }
+            },
+            {
+                "type": "addClass",
+                "target": "student.name",
+                "value": "border-red-500 bg-red-50",
+                "options": {}
+            }
+        ]
+    },
+    {
+        "id": "student-name-validation",
+        "name": "Student Name Format Validation",
+        "enabled": true,
+        "priority": 95,
+        "conditions": {
+            "field": "student.name",
+            "operator": "hasValue"
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.name",
+                "options": {
+                    "validator": {
+                        "type": "pattern",
+                        "pattern": "^[a-zA-Z\\s]{2,50}$",
+                        "message": "Name must contain only letters and spaces (2-50 characters)"
+                    }
+                }
+            },
+            {
+                "type": "removeClass",
+                "target": "student.name",
+                "value": "border-red-500 bg-red-50",
+                "options": {}
+            },
+            {
+                "type": "addClass",
+                "target": "student.name",
+                "value": "border-green-500 bg-green-50",
+                "options": {}
+            }
+        ]
+    },
+    {
+        "id": "student-email-required",
+        "name": "Student Email Required",
+        "enabled": true,
+        "priority": 90,
+        "conditions": {
+            "field": "student.email",
+            "operator": "isEmpty"
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.email",
+                "value": true,
+                "options": {
+                    "message": "Email address is required"
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-email-validation",
+        "name": "Student Email Format Validation",
+        "enabled": true,
+        "priority": 85,
+        "conditions": {
+            "field": "student.email",
+            "operator": "hasValue"
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.email",
+                "options": {
+                    "validator": {
+                        "type": "email",
+                        "message": "Please enter a valid email address"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-email-domain-check",
+        "name": "Student Email Domain Validation",
+        "enabled": true,
+        "priority": 80,
+        "conditions": {
+            "logic": "all",
+            "rules": [
+                {
+                    "field": "student.email",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.email",
+                    "operator": "contains",
+                    "value": "@",
+                    "config": {
+                        "caseSensitive": false
+                    }
+                }
+            ]
+        },
+        "actions": [
+            {
+                "type": "showMessage",
+                "target": "emailHelp",
+                "value": "",
+                "options": {
+                    "content": "Please use your school or personal email address",
+                    "type": "info",
+                    "position": "below",
+                    "duration": 3000
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-phone-required",
+        "name": "Student Phone Required",
+        "enabled": true,
+        "priority": 75,
+        "conditions": {
+            "field": "student.phone",
+            "operator": "isEmpty"
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.phone",
+                "value": true,
+                "options": {
+                    "message": "Phone number is required"
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-phone-format",
+        "name": "Student Phone Format Validation",
+        "enabled": true,
+        "priority": 70,
+        "conditions": {
+            "field": "student.phone",
+            "operator": "hasValue"
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.phone",
+                "options": {
+                    "validator": {
+                        "type": "pattern",
+                        "pattern": "^[+]?[0-9]{10,15}$",
+                        "message": "Phone number must be 10-15 digits (+ allowed at start)"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-dob-required",
+        "name": "Student Date of Birth Required",
+        "enabled": true,
+        "priority": 65,
+        "conditions": {
+            "field": "student.dob",
+            "operator": "isEmpty"
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.dob",
+                "value": true,
+                "options": {
+                    "message": "Date of birth is required"
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-dob-validation",
+        "name": "Student Date of Birth Validation",
+        "enabled": true,
+        "priority": 60,
+        "conditions": {
+            "field": "student.dob",
+            "operator": "hasValue"
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.dob",
+                "options": {
+                    "validator": {
+                        "type": "date",
+                        "message": "Please enter a valid date of birth"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-age-check",
+        "name": "Student Age Validation",
+        "enabled": true,
+        "priority": 55,
+        "conditions": {
+            "field": "student.dob",
+            "operator": "before",
+            "value": "dynamic::today",
+            "config": {
+                "inclusive": false
+            }
+        },
+        "actions": [
+            {
+                "type": "calculate",
+                "target": "student.age",
+                "value": "Math.floor((new Date() - new Date({student.dob})) / (365.25 * 24 * 60 * 60 * 1000))",
+                "options": {
+                    "precision": 0
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-grade-required",
+        "name": "Student Grade Required",
+        "enabled": true,
+        "priority": 50,
+        "conditions": {
+            "field": "student.grade",
+            "operator": "isEmpty"
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.grade",
+                "value": true,
+                "options": {
+                    "message": "Grade level is required"
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-grade-validation",
+        "name": "Student Grade Validation",
+        "enabled": true,
+        "priority": 45,
+        "conditions": {
+            "field": "student.grade",
+            "operator": "hasValue"
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.grade",
+                "options": {
+                    "validator": {
+                        "type": "pattern",
+                        "pattern": "^(K|[1-9]|1[0-2])$",
+                        "message": "Grade must be K, 1-12"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-major-conditional",
+        "name": "Student Major Required for High School",
+        "enabled": true,
+        "priority": 40,
+        "conditions": {
+            "field": "student.grade",
+            "operator": "in",
+            "value": ["9", "10", "11", "12"]
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.major",
+                "value": true,
+                "options": {
+                    "message": "Major is required for high school students"
+                }
+            },
+            {
+                "type": "show",
+                "target": "student.major",
+                "options": {
+                    "animation": "fadeIn"
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-major-hide-elementary",
+        "name": "Hide Major for Elementary Students",
+        "enabled": true,
+        "priority": 35,
+        "conditions": {
+            "field": "student.grade",
+            "operator": "in",
+            "value": ["K", "1", "2", "3", "4", "5", "6", "7", "8"]
+        },
+        "actions": [
+            {
+                "type": "hide",
+                "target": "student.major",
+                "options": {
+                    "animation": "fadeOut"
+                }
+            },
+            {
+                "type": "clearValue",
+                "target": "student.major",
+                "options": {}
+            },
+            {
+                "type": "setRequired",
+                "target": "student.major",
+                "value": false,
+                "options": {}
+            }
+        ]
+    },
+    {
+        "id": "student-major-validation",
+        "name": "Student Major Validation",
+        "enabled": true,
+        "priority": 30,
+        "conditions": {
+            "logic": "all",
+            "rules": [
+                {
+                    "field": "student.major",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.grade",
+                    "operator": "in",
+                    "value": ["9", "10", "11", "12"]
+                }
+            ]
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.major",
+                "options": {
+                    "validator": {
+                        "type": "pattern",
+                        "pattern": "^[a-zA-Z\\s]{2,30}$",
+                        "message": "Major must contain only letters and spaces (2-30 characters)"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-address-required",
+        "name": "Student Address Required",
+        "enabled": true,
+        "priority": 25,
+        "conditions": {
+            "field": "student.address",
+            "operator": "isEmpty"
+        },
+        "actions": [
+            {
+                "type": "setRequired",
+                "target": "student.address",
+                "value": true,
+                "options": {
+                    "message": "Address is required"
+                }
+            }
+        ]
+    },
+    {
+        "id": "student-address-validation",
+        "name": "Student Address Format Validation",
+        "enabled": true,
+        "priority": 20,
+        "conditions": {
+            "field": "student.address",
+            "operator": "hasValue"
+        },
+        "actions": [
+            {
+                "type": "addValidator",
+                "target": "student.address",
+                "options": {
+                    "validator": {
+                        "type": "minLength",
+                        "value": 10,
+                        "message": "Address must be at least 10 characters long"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": "form-completion-check",
+        "name": "Form Completion Status",
+        "enabled": true,
+        "priority": 10,
+        "conditions": {
+            "logic": "all",
+            "rules": [
+                {
+                    "field": "student.name",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.email",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.phone",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.dob",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.grade",
+                    "operator": "hasValue"
+                },
+                {
+                    "field": "student.address",
+                    "operator": "hasValue"
+                }
+            ]
+        },
+        "actions": [
+            {
+                "type": "enable",
+                "target": "submitButton",
+                "options": {}
+            },
+            {
+                "type": "addClass",
+                "target": "submitButton",
+                "value": "bg-green-600 hover:bg-green-700 text-white",
+                "options": {}
+            },
+            {
+                "type": "showMessage",
+                "target": "formStatus",
+                "value": "",
+                "options": {
+                    "content": "Form is ready to submit!",
+                    "type": "success",
+                    "position": "topRight",
+                    "duration": 2000
+                }
+            }
+        ]
+    }
+]
